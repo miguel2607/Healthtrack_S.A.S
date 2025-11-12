@@ -74,10 +74,10 @@ public final class HealthSystem {
 
     public boolean addAppointment(Appointment appointment) {
         if (registeredAppointments.contains(appointment)) {
-            return false;
+            throw new IllegalArgumentException("El paciente ya tiene una cita registrada en este horario (" + appointment.schedule() + ").");
         }
         if (!isDoctorAvailableAt(appointment.doctor(), appointment.schedule())) {
-            return false;
+            throw new IllegalArgumentException("El médico no está disponible en el horario seleccionado (" + appointment.schedule() + ").");
         }
         registeredAppointments.add(appointment);
         appointments.add(appointment);
