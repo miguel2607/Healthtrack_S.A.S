@@ -18,8 +18,7 @@ public final class HealthSystem {
 
     private final List<ClinicSite> clinics = new ArrayList<>();
     private final List<Doctor> doctors = new ArrayList<>();
-    private final PriorityQueue<Appointment> appointments =
-            new PriorityQueue<>(Comparator.naturalOrder());
+    private final PriorityQueue<Appointment> appointments = new PriorityQueue<>(Comparator.naturalOrder());
     private final List<Appointment> registeredAppointments = new ArrayList<>();
 
     public boolean addClinic(ClinicSite clinic) {
@@ -48,7 +47,11 @@ public final class HealthSystem {
         }
         for (Doctor existing : doctors) {
             if (existing.id().equalsIgnoreCase(doctor.id())) {
-                return false;
+                if (existing.clinicCode().equalsIgnoreCase(doctor.clinicCode())) {
+                    throw new IllegalArgumentException("El médico ya está registrado en esta sede.");
+                } else {
+                    throw new IllegalArgumentException("El médico ya está registrado en otra sede (" + existing.clinicCode() + ").");
+                }
             }
         }
         doctors.add(doctor);
